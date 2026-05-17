@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1st Birthday Invitation - R Dyuthi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Added Confetti Engine for Celebration Blast -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Outfit:wght@300;400;500;600;700&family=Great+Vibes&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #fdfcfb;
+            min-height: 100dvh;
+            margin: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        
+        .heading-font { font-family: 'Outfit', sans-serif; }
+        .name-font { font-family: 'Great Vibes', cursive; }
+        .cover-title-font { font-family: 'Fredoka', sans-serif; }
+        .gold-accent { color: #d4af37; }
+        .bg-gold { background-color: #d4af37; }
+
+        /* --- Cover Page Styles --- */
+        #cover-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100dvh;
+            background: url('Dyuthi.png') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 50;
+            transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            padding: 4rem 1.5rem 3rem 1.5rem;
+        }
+
+        #cover-page::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.7) 0%, rgba(15, 23, 42, 0) 25%, rgba(15, 23, 42, 0) 75%, rgba(15, 23, 42, 0.8) 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        #cover-page > * { z-index: 10; }
+
+        .open-btn {
+            margin-top: 2rem;
+            padding: 12px 36px;
+            background: linear-gradient(135deg, #d4af37, #b8860b);
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: float 3s infinite ease-in-out;
+            text-transform: uppercase;
+        }
+
+        .open-btn:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 15px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        .slide-up-fade {
+            transform: translateY(-100%) scale(0.9);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* --- Main Invitation Styles (Trendy & Clean) --- */
+        #main-invitation {
+            display: none;
+            min-height: 100dvh;
+            padding: 1rem;
+            background: #fdfcfb;
+            background-image: radial-gradient(#d4af37 0.5px, transparent 0.5px), radial-gradient(#d4af37 0.5px, #fdfcfb 0.5px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            background-attachment: fixed;
+            opacity: 0.95;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-container {
+            background: #ffffff;
+            border-radius: 30px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.08);
+            max-width: 650px;
+            width: 100%;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative Top elements */
+        .card-header-decor {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="2" fill="%23d4af37" opacity="0.4"/><path d="M50 10 L55 25 L70 30 L55 35 L50 50 L45 35 L30 30 L45 25 Z" fill="%23d4af37" opacity="0.3" transform="scale(0.5) translate(80, 20)"/></svg>') repeat-x;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .family-image-container {
+            width: 100%;
+            max-width: 250px;
+            margin: 0 auto 1.5rem auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 5;
+        }
+
+        .family-image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* 3D Golden Text */
+        .text-3d-gold {
+            background: linear-gradient(to bottom, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0px 3px 3px rgba(0,0,0,0.15));
+            line-height: 1.2;
+            padding: 10px 0;
+        }
+
+        .trendy-button {
+            background: #ffffff;
+            border: 2px solid #d4af37;
+            color: #b8860b;
+            transition: all 0.3s ease;
+        }
+        .trendy-button:hover {
+            background: #d4af37;
+            color: #ffffff;
+            box-shadow: 0 10px 20px rgba(212,175,55,0.2);
+            transform: translateY(-2px);
+        }
+
+        .countdown-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sequence-line {
+            flex-grow: 1;
+            height: 2px;
+            background-image: linear-gradient(to right, #d4af37 50%, rgba(255, 255, 255, 0) 0%);
+            background-position: bottom;
+            background-size: 10px 2px;
+            background-repeat: repeat-x;
+            opacity: 0.4;
+            margin: 0 10px;
+        }
+
+        /* --- COLORFUL BACKGROUND ADDITIONS (Say "bassy out" to revert) --- */
+        body.colorful-mode #main-invitation {
+            /* Dreamy soft blush and peach magical gradient */
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 50%, #fff6e5 100%);
+            background-image: radial-gradient(rgba(212, 175, 55, 0.3) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        body.colorful-mode .card-container {
+            /* Adds a soft glowing tint to the card itself */
+            background: linear-gradient(to bottom, #ffffff 0%, #fffafb 100%);
+            border: 2px solid rgba(255, 182, 193, 0.5);
+            box-shadow: 0 25px 60px rgba(255, 182, 193, 0.2);
+        }
+        /* ----------------------------------------------------------------- */
+
+        /* --- Magical Details Styles --- */
+        .magical-details-container {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 1.5rem;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #d4af37, #f3e5ab, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
+        }
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+        .blob {
+            position: absolute;
+            filter: blur(40px);
+            z-index: 0;
+            opacity: 0.4;
+            border-radius: 50%;
+            animation: moveBlob 8s infinite alternate ease-in-out;
+        }
+        @keyframes moveBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(20px, -30px) scale(1.1); }
+        }
+    </style>
+</head>
+<!-- Added the colorful-mode class to the body -->
+<body class="colorful-mode">
+
+    <!-- ================= COVER PAGE ================= -->
+    <div id="cover-page">
+        <div class="text-center mt-10 w-full">
+            <h3 class="heading-font text-white text-xs sm:text-sm tracking-[0.3em] uppercase mb-4" style="text-shadow: 1px 2px 5px rgba(0,0,0,0.9);">
+                You're Invited To
+            </h3>
+            <h2 class="cover-title-font text-3xl sm:text-4xl mb-2 text-[#fcf6ba] tracking-wide" style="text-shadow: 2px 4px 8px rgba(0,0,0,0.8);">
+                A Magical First Birthday
+            </h2>
+        </div>
+        
+        <button class="open-btn flex items-center gap-3 mb-10" onclick="openInvitation()">
+            <i class="fa-solid fa-envelope-open-text"></i> Open Invitation
+        </button>
+    </div>
+
+    <!-- ================= MAIN INVITATION CARD ================= -->
+    <div id="main-invitation-wrapper" style="display: none;">
+        <div id="main-invitation">
+            <div class="card-container p-6 sm:p-14 text-center fade-in-up z-10">
+                <div class="card-header-decor"></div>
+                
+                <h3 class="heading-font text-xs sm:text-sm tracking-[0.3em] text-gray-500 uppercase mb-2 mt-4 font-medium">You're Invited To</h3>
+                
+                <!-- Huge Trendy 3D Golden Font -->
+                <h1 class="name-font text-6xl sm:text-[5.5rem] text-3d-gold my-2 drop-shadow-sm font-bold">
+                    R Dyuthi's
+                </h1>
+                
+                <h3 class="heading-font text-xs sm:text-sm tracking-[0.2em] text-gray-800 uppercase mb-8 font-semibold">First Birthday Celebration</h3>
+
+                <!-- Family Photo -->
+                <div class="family-image-container max-w-[200px] sm:max-w-[260px]">
+                    <img src="Family_1.png" alt="The Family" onerror="this.src='https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=400&q=80'">
+                </div>
+
+                <p class="text-gray-600 leading-relaxed mb-6 text-sm sm:text-base px-2 font-light">
+                    Join us for an evening of joy, laughter, and a touch of magic as we celebrate our little one's very first milestone!
+                </p>
+
+                <!-- Flow of the Evening (Updated Event Sequence) -->
+                <div class="my-8 pt-4 pb-2">
+                    <h4 class="heading-font text-xs tracking-[0.15em] text-gray-400 uppercase mb-6">Flow of the Evening</h4>
+                    <div class="flex items-center justify-between px-1 sm:px-4">
+                        
+                        <!-- People Gathering -->
+                        <div class="text-center flex flex-col items-center">
+                            <div class="w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-yellow-50 flex items-center justify-center mb-2 shadow-sm border border-yellow-100">
+                                <i class="fa-solid fa-users gold-accent text-sm sm:text-lg"></i>
+                            </div>
+                            <span class="text-[9px] sm:text-xs font-semibold text-gray-700 uppercase">Gathering</span>
+                        </div>
+                        
+                        <div class="sequence-line hidden sm:block"></div>
+                        <i class="fa-solid fa-angle-right text-gray-300 sm:hidden mx-1 text-[10px]"></i>
+                        
+                        <!-- Magic Show -->
+                        <div class="text-center flex flex-col items-center">
+                            <div class="w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-yellow-50 flex items-center justify-center mb-2 shadow-sm border border-yellow-100">
+                                <i class="fa-solid fa-wand-magic-sparkles gold-accent text-sm sm:text-lg"></i>
+                            </div>
+                            <span class="text-[9px] sm:text-xs font-semibold text-gray-700 uppercase">Magic Show</span>
+                        </div>
+                        
+                        <div class="sequence-line hidden sm:block"></div>
+                        <i class="fa-solid fa-angle-right text-gray-300 sm:hidden mx-1 text-[10px]"></i>
+
+                        <!-- Cake Cutting -->
+                        <div class="text-center flex flex-col items-center">
+                            <div class="w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-yellow-50 flex items-center justify-center mb-2 shadow-sm border border-yellow-100">
+                                <i class="fa-solid fa-cake-candles gold-accent text-sm sm:text-lg"></i>
+                            </div>
+                            <span class="text-[9px] sm:text-xs font-semibold text-gray-700 uppercase">Cake Cutting</span>
+                        </div>
+                        
+                        <div class="sequence-line hidden sm:block"></div>
+                        <i class="fa-solid fa-angle-right text-gray-300 sm:hidden mx-1 text-[10px]"></i>
+                        
+                        <!-- Dinner -->
+                        <div class="text-center flex flex-col items-center">
+                            <div class="w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-yellow-50 flex items-center justify-center mb-2 shadow-sm border border-yellow-100">
+                                <i class="fa-solid fa-utensils gold-accent text-sm sm:text-lg"></i>
+                            </div>
+                            <span class="text-[9px] sm:text-xs font-semibold text-gray-700 uppercase">Dinner</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-16 sm:w-24 h-[1px] bg-gray-200 mx-auto mb-8"></div>
+
+                <!-- Magical Event Details Section -->
+                <div class="magical-details-container p-6 sm:p-8 mb-8 shadow-2xl text-white text-left">
+                    <!-- Ambient Glowing Blobs -->
+                    <div class="blob w-32 h-32 bg-yellow-600 top-0 left-0"></div>
+                    <div class="blob w-32 h-32 bg-blue-900 bottom-0 right-0" style="animation-delay: 2s;"></div>
+                    
+                    <div class="relative z-10">
+                        <h3 class="heading-font text-xl sm:text-2xl text-gradient-gold mb-6 font-bold tracking-wide text-center">The Magical Details</h3>
+                        
+                        <!-- Grid for Date and Time -->
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="glass-panel p-4 sm:p-5 rounded-2xl flex flex-col items-center justify-center transition transform hover:scale-105 text-center">
+                                <i class="fa-solid fa-calendar-days text-2xl sm:text-3xl gold-accent mb-2"></i>
+                                <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mb-1 mt-2">When</span>
+                                <span class="text-sm sm:text-lg font-semibold tracking-wide">23rd May 2026</span>
+                            </div>
+                            <div class="glass-panel p-4 sm:p-5 rounded-2xl flex flex-col items-center justify-center transition transform hover:scale-105 text-center">
+                                <i class="fa-solid fa-hourglass-half text-2xl sm:text-3xl gold-accent mb-2"></i>
+                                <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mb-1 mt-2">Time</span>
+                                <span class="text-sm sm:text-lg font-semibold tracking-wide">6:00 PM Onwards</span>
+                            </div>
+                        </div>
+
+                        <!-- Venue Panel -->
+                        <div class="glass-panel p-4 sm:p-6 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 transition transform hover:scale-[1.02]">
+                            <div class="flex items-center gap-4 text-left">
+                                <div class="bg-gray-800/80 p-3 rounded-full shrink-0">
+                                    <i class="fa-solid fa-map-location-dot text-xl gold-accent w-6 text-center"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mb-1">Where</span>
+                                    <span class="block font-semibold text-sm sm:text-lg text-white">[Party Hall Name]</span>
+                                    <span class="block text-xs text-gray-300 mt-1">Salem, Tamil Nadu</span>
+                                </div>
+                            </div>
+                            <!-- Map Button Link -->
+                            <a href="https://maps.app.goo.gl/XxpWeTPmAkTC3nB89" target="_blank" class="px-5 py-2 text-xs sm:text-sm border border-[#d4af37] text-[#d4af37] rounded-full hover:bg-[#d4af37] hover:text-white transition-colors w-full sm:w-auto text-center font-semibold whitespace-nowrap">
+                                <i class="fa-solid fa-location-arrow mr-1"></i> Directions
+                            </a>
+                        </div>
+
+                        <!-- Live Countdown Section (Inside Magical Container) -->
+                        <div class="mt-8 pt-6 border-t border-gray-700/50">
+                            <h4 class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mb-4 text-center">Magic begins in</h4>
+                            <div class="flex justify-center gap-4 sm:gap-6" id="countdown-timer">
+                                <div class="countdown-box">
+                                    <span class="text-xl sm:text-3xl font-bold text-gradient-gold heading-font" id="cd-days">00</span>
+                                    <span class="text-[9px] sm:text-[10px] text-gray-400 uppercase tracking-widest mt-1">Days</span>
+                                </div>
+                                <span class="text-xl sm:text-2xl text-gray-500 font-light mt-1 sm:mt-0">:</span>
+                                <div class="countdown-box">
+                                    <span class="text-xl sm:text-3xl font-bold text-gradient-gold heading-font" id="cd-hours">00</span>
+                                    <span class="text-[9px] sm:text-[10px] text-gray-400 uppercase tracking-widest mt-1">Hrs</span>
+                                </div>
+                                <span class="text-xl sm:text-2xl text-gray-500 font-light mt-1 sm:mt-0">:</span>
+                                <div class="countdown-box">
+                                    <span class="text-xl sm:text-3xl font-bold text-gradient-gold heading-font" id="cd-mins">00</span>
+                                    <span class="text-[9px] sm:text-[10px] text-gray-400 uppercase tracking-widest mt-1">Mins</span>
+                                </div>
+                                <span class="text-xl sm:text-2xl text-gray-500 font-light mt-1 sm:mt-0">:</span>
+                                <div class="countdown-box">
+                                    <span class="text-xl sm:text-3xl font-bold text-gradient-gold heading-font" id="cd-secs">00</span>
+                                    <span class="text-[9px] sm:text-[10px] text-gray-400 uppercase tracking-widest mt-1">Secs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RSVP Button (Confetti Blast Only) -->
+                <button onclick="triggerConfetti()" class="trendy-button px-6 sm:px-10 py-3 sm:py-4 rounded-full font-bold tracking-wide w-full sm:w-auto flex items-center justify-center gap-2 mx-auto text-sm sm:text-base cursor-pointer">
+                    <i class="fa-solid fa-heart"></i> We'd love to celebrate with you
+                </button>
+
+                <p class="text-gray-500 mt-8 font-medium text-xs sm:text-sm">
+                    Warm Regards,<br>
+                    <span class="text-gray-800 font-bold heading-font mt-1 inline-block">Raja Sabaresh & Pavithra</span>
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openInvitation() {
+            const coverPage = document.getElementById('cover-page');
+            const mainInviteWrapper = document.getElementById('main-invitation-wrapper');
+            
+            coverPage.classList.add('slide-up-fade');
+            
+            setTimeout(() => {
+                coverPage.style.display = 'none';
+                mainInviteWrapper.style.display = 'block';
+                startCountdown(); 
+            }, 700); 
+        }
+
+        // Trigger the celebration confetti blast!
+        function triggerConfetti() {
+            confetti({
+                particleCount: 150,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: ['#d4af37', '#fcf6ba', '#ffb6c1', '#87ceeb', '#ffffff'],
+                zIndex: 100
+            });
+        }
+
+        // Live Countdown Logic
+        function startCountdown() {
+            const countDownDate = new Date("May 23, 2026 18:00:00").getTime();
+
+            const timerInterval = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+
+                const timerContainer = document.getElementById("countdown-timer");
+                const daysEl = document.getElementById("cd-days");
+                const hoursEl = document.getElementById("cd-hours");
+                const minsEl = document.getElementById("cd-mins");
+                const secsEl = document.getElementById("cd-secs");
+
+                // Prevent errors if HTML elements are missing
+                if (!timerContainer || !daysEl || !hoursEl || !minsEl || !secsEl) {
+                    clearInterval(timerInterval);
+                    return;
+                }
+
+                if (distance < 0) {
+                    clearInterval(timerInterval);
+                    timerContainer.innerHTML = "<div class='text-lg text-[#d4af37] font-bold'>The celebration has begun!</div>";
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                daysEl.innerText = days.toString().padStart(2, '0');
+                hoursEl.innerText = hours.toString().padStart(2, '0');
+                minsEl.innerText = minutes.toString().padStart(2, '0');
+                secsEl.innerText = seconds.toString().padStart(2, '0');
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
